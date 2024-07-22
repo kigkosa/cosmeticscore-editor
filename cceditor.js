@@ -8,7 +8,7 @@
 		author: "LoneDev",
 		description: "Utility to easily edit and preview CosmeticsCore cosmetics.",
 		icon: icon,
-		version: "1.1.0",
+		version: "1.2.0",
 		variant: "both",
         min_version: "4.6.4",
 		onload: onload,
@@ -49,7 +49,7 @@
                 }
                 else if(isSelfModel()){
                     return "This self body cosmetic is compatible with Minecraft client 1.20.1 and lower. To create the model compatible with 1.20.2 (self_2) open the CosmeticsCore menu and press on 'Create Model'."
-                } else if(isSelfModelNew()) {
+                } else if(isSelfModel2()) {
                     return "This self body cosmetic is compatible with Minecraft client 1.20.2 and greater. To create the model compatible with 1.20.1 (self) open the CosmeticsCore menu and press on 'Create Model'."
                 }
             }
@@ -107,7 +107,7 @@
                     category: 'CosmeticsCore',
                     name: "Self body cosmetic | MC client 1.20.2 and greater",
                     id: 'body_cosmetic_info',
-                    condition: () => isSelfModelNew(),
+                    condition: () => isSelfModel2(),
                     click: function () {
                         Blockbench.showMessageBox({
                             title: "Info",
@@ -403,7 +403,7 @@
                 return Project.name.endsWith("_self");
             }
 
-            function isSelfModelNew() {
+            function isSelfModel2() {
                 if(!Project.name)
                     return false;
                 return Project.name.endsWith("_self_2");
@@ -428,8 +428,8 @@
                     DisplayMode.loadbody_cosmetic()
 
                     // Hide various preview types panel
-                    $("#display_bar").hide()
-                    $("#display_bar").prev("p").hide()
+                    // $("#display_bar").hide()
+                    // $("#display_bar").prev("p").hide()
 
                     // Hide head pose
                     $("#display_sliders").children().slice(-2).hide()
@@ -509,14 +509,14 @@
 
                 //Transformer.center()
                 let offset = 0;
-                if(isSelfModelNew()) {
-                    offset = 97.5;
+                if(isSelfModel2()) {
+                    offset = 98.7;
                 } else if(isSelfModel()) {
-                    offset = 95;
+                    offset = 93.2;
                 } else if(isNormalModel2()) {
-                    offset = 35 + 10.75;
+                    offset = 35 + 12.60;
                 } else if(isNormalModel()) {
-                    offset = 35;
+                    offset = 36.1;
                 }
 
                 display_base.position.y = slot.translation[1] + offset;
@@ -534,7 +534,7 @@
                         text: `Preview of self cosmetic model.`,
                         expire: 30000
                     });
-                } else if(isSelfModelNew()) {
+                } else if(isSelfModel2()) {
                     lastToastNotif = Blockbench.showToastNotification({
                         text: `Preview of self_2 cosmetic model.`,
                         expire: 30000
