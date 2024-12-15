@@ -510,11 +510,11 @@
                 //Transformer.center()
                 let offset = 0;
                 if(isSelfModel2()) {
-                    offset = 98.7;
+                    offset = 98.2;
                 } else if(isSelfModel()) {
                     offset = 93.2;
                 } else if(isNormalModel2()) {
-                    offset = 35 + 12.60;
+                    offset = 35 + 11.85;
                 } else if(isNormalModel()) {
                     offset = 36.1;
                 }
