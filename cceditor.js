@@ -355,7 +355,7 @@
                 window.displayReferenceObjects.bar(['player'])
 
                 // Set camera rotation and position
-                display_preview.loadAnglePreset(display_angle_preset)
+                // display_preview.loadAnglePreset(display_angle_preset)
             }
 
             removeTool("body_cosmetic")
@@ -474,16 +474,16 @@
             function loadDispbody_cosmetic(key) {	//Loads The Menu and slider values, common for all Radio Buttons
                 display_slot = key
 
-                display_preview.controls.enabled = true;
-                ground_animation = false;
-                $('#display_crosshair').detach()
-                if (display_preview.orbit_gizmo) display_preview.orbit_gizmo.unhide();
-                display_preview.camPers.setFocalLength(45)
+                // if (preview.controls) preview.controls.enabled = true;
+                // ground_animation = false;
+                // $('#display_crosshair').detach()
+                // if (display_preview.orbit_gizmo) display_preview.orbit_gizmo.unhide();
+                // display_preview.camPers.setFocalLength(45)
 
-                if (Project.display_settings[key] == undefined) {
-                    Project.display_settings[key] = new DisplaySlot()
-                }
-                display_preview.force_locked_angle = false;
+                // if (Project.display_settings[key] == undefined) {
+                //     Project.display_settings[key] = new DisplaySlot()
+                // }
+                // display_preview.force_locked_angle = false;
                 DisplayMode.vue._data.slot = Project.display_settings[key]
                 DisplayMode.slot = Project.display_settings[key]
                 updateDisplayBasebody_cosmetic();
