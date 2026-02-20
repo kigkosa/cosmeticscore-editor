@@ -8,9 +8,9 @@
 		author: "LoneDev",
 		description: "Utility to easily edit and preview CosmeticsCore cosmetics.",
 		icon: icon,
-		version: "1.2.0",
+		version: "1.2.3",
 		variant: "both",
-        min_version: "4.6.4",
+        min_version: "5.0.0",
 		onload: onload,
 		onunload() {  },
 		onuninstall() { }
@@ -355,7 +355,7 @@
                 window.displayReferenceObjects.bar(['player'])
 
                 // Set camera rotation and position
-                // display_preview.loadAnglePreset(display_angle_preset)
+                // loadAnglePreset(display_angle_preset)
             }
 
             removeTool("body_cosmetic")
@@ -447,6 +447,7 @@
 
                     // First tab
                     $("#thirdperson_righthand").trigger("click");
+                    $("#thirdperson_righthand").trigger("click");
                     DisplayMode.loadThirdRight()
 
                     // Hide various preview types panel
@@ -457,9 +458,9 @@
                     $("#display_sliders").children().slice(-2).show()
 
                     // Restore original selected tab
-                    if(prevSelectedMode == null)
-                        prevSelectedMode = Modes.options.edit
-                    prevSelectedMode.select()
+                    // if(prevSelectedMode == null)
+                    //     prevSelectedMode = Modes.options.edit
+                    // prevSelectedMode.select()
                 }
             }
 
@@ -473,17 +474,17 @@
 
             function loadDispbody_cosmetic(key) {	//Loads The Menu and slider values, common for all Radio Buttons
                 display_slot = key
-
-                // if (preview.controls) preview.controls.enabled = true;
-                // ground_animation = false;
-                // $('#display_crosshair').detach()
-                // if (display_preview.orbit_gizmo) display_preview.orbit_gizmo.unhide();
-                // display_preview.camPers.setFocalLength(45)
-
-                // if (Project.display_settings[key] == undefined) {
-                //     Project.display_settings[key] = new DisplaySlot()
-                // }
-                // display_preview.force_locked_angle = false;
+                // preview.controls.enabled = true;
+                ground_animation = false;
+                $('#display_crosshair').detach()
+                if (preview.orbit_gizmo) preview.orbit_gizmo.unhide();
+                // preview.camPers.setFocalLength(45)
+                
+                if (Project.display_settings[key] == undefined) {
+                        Project.display_settings[key] = new DisplaySlot()
+                }
+                // preview.force_locked_angle = false;
+                DisplayMode.display_slot = key;
                 DisplayMode.vue._data.slot = Project.display_settings[key]
                 DisplayMode.slot = Project.display_settings[key]
                 updateDisplayBasebody_cosmetic();
