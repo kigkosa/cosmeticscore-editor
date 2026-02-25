@@ -471,6 +471,13 @@
                 }
                 return Project.display_settings["head"];
             }
+            function getGUIData() {
+                if(!Project.display_settings["gui"]) {
+                    Project.display_settings["gui"] = new DisplaySlot();
+                    //DisplayMode.updateDisplayBase();
+                }
+                return Project.display_settings["gui"];
+            }
 
             function loadDispbody_cosmetic(key) {	//Loads The Menu and slider values, common for all Radio Buttons
                 display_slot = key
@@ -555,6 +562,7 @@
 
             function extendModelPositionLimits() {
                 let headData = getHeadData();
+                let guiData = getGUIData();
                 if(new Set(headData.scale).size === 1) {
 
                     if(headData.scale[0] * 2 > 4) {
@@ -567,15 +575,18 @@
 
                     Modes.options.display.select()
 
-                    scale(0.5)
+                    scale(0.5)  
 
                     // Move the WHOLE model down in the editor mode
                     moveAllDownUntilLimit()
-
                     // Scale the "head" display x2
                     headData.scale[0] *= 2;
                     headData.scale[1] *= 2;
                     headData.scale[2] *= 2;
+
+                    guiData.scale[0] *= 2;
+                    guiData.scale[1] *= 2;
+                    guiData.scale[2] *= 2;
 
                     Modes.options.display.select()
 
@@ -640,36 +651,22 @@
                     selectAll();
                 }
 
-                Undo.initEdit({elements: Outliner.selected, outliner: Format.bone_rig});
+                (Action?.get?.('scale')?.click ?? BarItems?.scale?.click)?.call(Action?.get?.('scale') ?? BarItems?.scale);
+                const dlg = Dialog?.open;
+                if (!dlg || dlg.id !== 'scale') return;
 
-                Outliner.selected.forEach((obj) => {
-                    obj.before = {
-                        from: obj.from ? obj.from.slice() : undefined,
-                        to: obj.to ? obj.to.slice() : undefined,
-                        origin: obj.origin ? obj.origin.slice() : undefined
-                    }
-                    if (obj instanceof Mesh) {
-                        obj.before.vertices = {};
-                        for (let key in obj.vertices) {
-                            obj.before.vertices[key] = obj.vertices[key].slice();
-                        }
-                    }
-                })
-                ModelScaler.getScaleGroups().forEach((g) => {
-                    g.old_origin = g.origin.slice();
-                }, Group, true)
+                const v = Format.centered_grid ? 0 : 8;
+                const defaultOrigin = Group.first_selected ? Group.first_selected.origin : [v, 0, v];
+                const origin = defaultOrigin;
 
-                ModelScaler.dialog.show();
-
-                ModelScaler.overflow = null;
-                let v = Format.centered_grid ? 0 : 8;
-                let origin = Group.selected ? Group.selected.origin : [v, 0, v];
-                ModelScaler.dialog.setFormValues({
+                dlg.setFormValues({
+                    axis: { x: true, y: true, z: true },
                     origin,
-                    scale: size
+                    scale: size,
                 });
 
-                ModelScaler.dialog.confirm();
+                dlg.confirm(); // จะไป onConfirm() ของ dialog แล้ว scale + finish undo
+         
             }
 
             function askExtendModelPositionLimits() {
