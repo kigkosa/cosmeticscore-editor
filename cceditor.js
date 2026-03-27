@@ -503,17 +503,17 @@
             const updateDisplayBasebody_cosmetic = function() {
                 slot = getHeadData()
 
-                display_base.rotation.x = Math.PI / (180 / slot.rotation[0]);
-                display_base.rotation.y = Math.PI / (180 / slot.rotation[1]) * (display_slot.includes('lefthand') ? -1 : 1);
-                display_base.rotation.z = Math.PI / (180 / slot.rotation[2]) * (display_slot.includes('lefthand') ? -1 : 1);
+                DisplayMode.display_base.rotation.x = Math.PI / (180 / slot.rotation[0]);
+                DisplayMode.display_base.rotation.y = Math.PI / (180 / slot.rotation[1]) * (display_slot.includes('lefthand') ? -1 : 1);
+                DisplayMode.display_base.rotation.z = Math.PI / (180 / slot.rotation[2]) * (display_slot.includes('lefthand') ? -1 : 1);
 
-                display_base.position.x = slot.translation[0] * (display_slot.includes('lefthand') ? -1 : 1);
-                display_base.position.y = slot.translation[1];
-                display_base.position.z = slot.translation[2];
+                DisplayMode.display_base.position.x = slot.translation[0] * (display_slot.includes('lefthand') ? -1 : 1);
+                DisplayMode.display_base.position.y = slot.translation[1];
+                DisplayMode.display_base.position.z = slot.translation[2];
 
-                display_base.scale.x = (slot.scale[0]||0.001) * (slot.mirror[0] ? -1 : 1);
-                display_base.scale.y = (slot.scale[1]||0.001) * (slot.mirror[1] ? -1 : 1);
-                display_base.scale.z = (slot.scale[2]||0.001) * (slot.mirror[2] ? -1 : 1);
+                DisplayMode.display_base.scale.x = (slot.scale[0]||0.001) * (slot.mirror[0] ? -1 : 1);
+                DisplayMode.display_base.scale.y = (slot.scale[1]||0.001) * (slot.mirror[1] ? -1 : 1);
+                DisplayMode.display_base.scale.z = (slot.scale[2]||0.001) * (slot.mirror[2] ? -1 : 1);
 
                 //Transformer.center()
                 let offset = 0;
@@ -527,7 +527,7 @@
                     offset = 36.1;
                 }
 
-                display_base.position.y = slot.translation[1] + offset;
+                DisplayMode.display_base.position.y = slot.translation[1] + offset;
 
                 // Temporary hack to keep the gizmo in the center of the back
                 fixGizmoPreviewCosmetic()
