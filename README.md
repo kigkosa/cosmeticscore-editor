@@ -29,16 +29,6 @@ A Blockbench plugin for creating and editing CosmeticsCore cosmetics with live p
 2. Follow the setup wizard for your specific cosmetic type
 3. Refer to the [CosmeticsCore Wiki](https://cosmeticscore.devs.beer/adding-content/body-cosmetic/static-body-cosmetic) for detailed instructions
 
-## 🚀 Auto Release
-
-This project uses GitHub Actions to automatically create releases:
-- ✅ Push changes to `main` branch → Auto release  
-- ✅ Version extracted from `cceditor.js` automatically
-- ✅ `cceditor.js` file included in every release
-- ✅ Release notes generated automatically
-
-See [GitHub Actions documentation](.github/README.md) for more details.
-
 ## 📚 Documentation
 
 - [CosmeticsCore Wiki](https://cosmeticscore.devs.beer/adding-content/body-cosmetic/static-body-cosmetic)
