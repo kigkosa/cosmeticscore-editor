@@ -8,7 +8,7 @@
 		author: "LoneDev",
 		description: "Utility to easily edit and preview CosmeticsCore cosmetics.",
 		icon: icon,
-		version: "1.2.3",
+		version: "1.2.4",
 		variant: "both",
         min_version: "5.0.0",
 		onload: onload,
