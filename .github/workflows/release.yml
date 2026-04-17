@@ -1,0 +1,108 @@
+name: Auto Release on Main Push
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'cceditor.js'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+        
+      - name: Extract version from cceditor.js
+        id: get-version
+        run: |
+          # Extract version from JavaScript file
+          VERSION=$(grep -oP 'version:\s*["\x27]\K[^"\x27]+' cceditor.js)
+          
+          if [ -z "$VERSION" ]; then
+            echo "❌ Cannot find version in cceditor.js"
+            exit 1
+          fi
+          
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "✅ Found version: $VERSION"
+          
+      - name: Check if release exists
+        id: check-release
+        run: |
+          TAG="v${{ steps.get-version.outputs.VERSION }}"
+          
+          # Check if tag already exists
+          if git tag -l "$TAG" | grep -q "$TAG"; then
+            echo "⚠️  Tag $TAG already exists, skipping release"
+            echo "SKIP=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Tag $TAG does not exist, proceeding with release"
+            echo "SKIP=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+          
+      - name: Create Git tag
+        if: steps.check-release.outputs.SKIP == 'false'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag ${{ steps.check-release.outputs.TAG }}
+          git push origin ${{ steps.check-release.outputs.TAG }}
+          
+      - name: Generate release notes
+        if: steps.check-release.outputs.SKIP == 'false'
+        id: release-notes
+        run: |
+          VERSION="${{ steps.get-version.outputs.VERSION }}"
+          cat > release-notes.md << EOF
+          ## 🎨 CosmeticsCore Editor v$VERSION
+          
+          ### 📦 What's included:
+          - **cceditor.js** - Blockbench plugin for CosmeticsCore cosmetics editing
+          
+          ### 📥 Installation:
+          1. Download the \`cceditor.js\` file from this release
+          2. Open Blockbench
+          3. Go to **File** → **Plugins** → **Load Plugin from File**
+          4. Select the downloaded \`cceditor.js\` file
+          5. The plugin will appear in the menu bar as "CosmeticsCore"
+          
+          ### 🔧 Setup:
+          - Set up Minecraft skin: **File** → **Preferences** → **Settings** → **Preview** → **Minecraft Skin** → Select \`skin_slim_alex.png\`
+          
+          ### 📚 Documentation:
+          - [CosmeticsCore Wiki](https://cosmeticscore.devs.beer/adding-content/body-cosmetic/static-body-cosmetic)
+          
+          ---
+          *This release was automatically created from the main branch*
+          EOF
+          
+      - name: Create GitHub Release
+        if: steps.check-release.outputs.SKIP == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.check-release.outputs.TAG }}
+          name: "CosmeticsCore Editor v${{ steps.get-version.outputs.VERSION }}"
+          body_path: release-notes.md
+          files: |
+            cceditor.js
+          draft: false
+          prerelease: false
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
+          
+      - name: Success notification
+        if: steps.check-release.outputs.SKIP == 'false'
+        run: |
+          echo "🎉 Successfully created release ${{ steps.check-release.outputs.TAG }}"
+          echo "📎 Release URL: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.check-release.outputs.TAG }}"
